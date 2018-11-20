@@ -19,7 +19,7 @@
         user: "{{ custom_user_name }}"
         state: present
         key: "{{ custom_user_ssh_key }}"
-        when: custom_user_ssh_key is defined
+      when: custom_user_ssh_key is defined
 
     - name: Ensure wheel group in sudoers
       lineinfile:
