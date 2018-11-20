@@ -3,15 +3,7 @@
   gather_facts: true
   become: yes
 
-  vars:
-    machine:
-      username: '{{ custom_user_name }}'
-      password: '{{ custom_user_password }}'
-  
   tasks:
-    - debug:
-      var: machine
-
     - name: Ensure Local User Created
       user:
         name: "{{ custom_user_name }}"
@@ -24,9 +16,10 @@
 
     - name: Add Local User Authorized SSH Key
       authorized_key:
-        user: "{{ local_user }}"
+        user: "{{ custom_user_name }}"
         state: present
-        key: ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQDPaWP4AbZCI4Ph0dGwmSQCuy77UW9AHwJAlHYEdkXKEpKdSlXKxF++9Y7zrvrdxLmOWkH+RxAJV4mbztQqxsGq5GQgmhCitpxEfmbtXdAcRZoereGVXar5+bLM99bggtB2Wo6HY0WoYMs3BjxPn6JcHYITkNcgBcfFxk4iGZRG/vc8d+9kTaDkYaBfs/6Yxsx1/s9VfRHezfFZrMa5W2ROizH6r/wnfC2exlpCPTkXeETQ/TLLs/yhuFB2/5DC3LJWATTKEh2RFSWbHjopsYz+WkNuQO4NRk75sajKaDA9mXf9OvZWoIS3i4a6vobfu13taEaNiI3pb6XZMjEqBVSp 
+        key: "{{ custom_user_ssh_key }}"
+        when: custom_user_ssh_key is defined
 
     - name: Ensure wheel group in sudoers
       lineinfile:
