@@ -5,8 +5,8 @@
 
   vars:
     machine:
-      username: '{{ local_user }}'
-      password: '{{ local_user_password }}'
+      username: '{{ custom_user_name }}'
+      password: '{{ custom_user_password }}'
   
   tasks:
     - debug:
@@ -14,8 +14,8 @@
 
     - name: Ensure Local User Created
       user:
-        name: "{{ local_user }}"
-        password: "{{ local_user_password |password_hash('sha512') }}"
+        name: "{{ custom_user_name }}"
+        password: "{{ custom_user_password |password_hash('sha512') }}"
         shell:  /bin/bash
         groups: 
           - wheel
@@ -33,5 +33,5 @@
         path: /etc/sudoers
         state: present
         regexp: '^%wheel ALL='
-        line: '%wheel ALL=(ALL)	ALL'
+        line: '%wheel ALL=(ALL)	NOPASSWD: ALL'
         validate: '/usr/sbin/visudo -cf %s'
