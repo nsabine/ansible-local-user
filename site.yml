@@ -2,8 +2,16 @@
 - hosts: "{{ target_hosts | default('all') }}"
   gather_facts: true
   become: yes
+
+  vars:
+    machine:
+      username: '{{ local_user }}'
+      password: '{{ local_user_password }}'
   
   tasks:
+    - debug:
+      var: machine
+
     - name: Ensure Local User Created
       user:
         name: "{{ local_user }}"
