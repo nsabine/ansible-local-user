@@ -16,7 +16,7 @@ fields:
     label: Custom password
   - type: string
     id: sshkey
-    label: Custom Public SSH Key
+    label: Custom Public SSH Key (Optional)
 required:
   - username
   - password
