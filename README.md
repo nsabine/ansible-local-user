@@ -9,14 +9,14 @@ Input configuration
 fields:
   - type: string
     id: username
-    label: Custom username
+    label: Username
   - secret: true
     type: string
     id: password
-    label: Custom password
+    label: Password
   - type: string
     id: sshkey
-    label: Custom Public SSH Key (Optional)
+    label: Public SSH Key (Optional)
 required:
   - username
   - password
