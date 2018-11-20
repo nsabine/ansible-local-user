@@ -1,0 +1,29 @@
+---
+- hosts: "{{ target_hosts | default('all') }}"
+  gather_facts: true
+  become: yes
+  
+  tasks:
+    - name: Ensure Local User Created
+      user:
+        name: "{{ local_user }}"
+        password: "{{ local_user_password |password_hash('sha512') }}"
+        shell:  /bin/bash
+        groups: 
+          - wheel
+        append: no   # overwrites additional groups.  change to yes to preserve.
+        state: present
+
+    - name: Add Local User Authorized SSH Key
+      authorized_key:
+        user: "{{ local_user }}"
+        state: present
+        key: ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQDPaWP4AbZCI4Ph0dGwmSQCuy77UW9AHwJAlHYEdkXKEpKdSlXKxF++9Y7zrvrdxLmOWkH+RxAJV4mbztQqxsGq5GQgmhCitpxEfmbtXdAcRZoereGVXar5+bLM99bggtB2Wo6HY0WoYMs3BjxPn6JcHYITkNcgBcfFxk4iGZRG/vc8d+9kTaDkYaBfs/6Yxsx1/s9VfRHezfFZrMa5W2ROizH6r/wnfC2exlpCPTkXeETQ/TLLs/yhuFB2/5DC3LJWATTKEh2RFSWbHjopsYz+WkNuQO4NRk75sajKaDA9mXf9OvZWoIS3i4a6vobfu13taEaNiI3pb6XZMjEqBVSp 
+
+    - name: Ensure wheel group in sudoers
+      lineinfile:
+        path: /etc/sudoers
+        state: present
+        regexp: '^%wheel ALL='
+        line: '%wheel ALL=(ALL)	ALL'
+        validate: '/usr/sbin/visudo -cf %s'
