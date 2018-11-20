@@ -17,7 +17,7 @@ fields:
 required:
   - username
   - password
-```
+````
 
 Injector Configuration
 ````
